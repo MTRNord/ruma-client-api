@@ -71,7 +71,8 @@ impl RoomEventFilter {
     /// A filter that can be used to ignore all room events
     pub fn ignore_all() -> Self {
         Self {
-            limit: Some(UInt::from(0u32)),
+            //limit: Some(UInt::from(0u32)),
+            rooms: Some(Vec::new()),
             ..Default::default()
         }
     }
@@ -123,6 +124,7 @@ impl RoomFilter {
             timeline: Some(RoomEventFilter::ignore_all()),
             ephemeral: Some(RoomEventFilter::ignore_all()),
             state: Some(RoomEventFilter::ignore_all()),
+            rooms: Some(Vec::new()),
             ..Default::default()
         }
     }
@@ -168,7 +170,8 @@ impl Filter {
     /// A filter that can be used to ignore all events
     pub fn ignore_all() -> Self {
         Self {
-            limit: Some(UInt::from(0u32)),
+            //limit: Some(UInt::from(0u32)),
+            types: Some(Vec::new()),
             ..Default::default()
         }
     }
@@ -207,6 +210,7 @@ impl FilterDefinition {
     /// A filter that can be used to ignore all events
     pub fn ignore_all() -> Self {
         Self {
+            event_fields: Some(Vec::new()),
             account_data: Some(Filter::ignore_all()),
             room: Some(RoomFilter::ignore_all()),
             presence: Some(Filter::ignore_all()),
