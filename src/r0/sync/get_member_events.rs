@@ -22,6 +22,7 @@ ruma_api! {
 
     response {
         /// A list of member events.
-        pub chunk: Vec<EventResult<MemberEvent>>
+        #[wrap_incoming(EventResult, generics_index = 0)]
+        pub chunk: Vec<MemberEvent>
     }
 }

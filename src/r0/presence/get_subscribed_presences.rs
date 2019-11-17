@@ -23,6 +23,7 @@ ruma_api! {
     response {
         /// A list of presence events for every user on this list.
         #[ruma_api(body)]
-        pub presence_events: Vec<EventResult<PresenceEvent>>,
+        #[wrap_incoming(EventResult, generics_index = 0)]
+        pub presence_events: Vec<PresenceEvent>,
     }
 }

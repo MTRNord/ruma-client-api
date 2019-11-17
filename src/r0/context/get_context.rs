@@ -32,16 +32,20 @@ ruma_api! {
         /// A token that can be used to paginate forwards with.
         pub end: String,
         /// Details of the requested event.
-        pub event: EventResult<only::RoomEvent>,
+        #[wrap_incoming(EventResult)]
+        pub event: only::RoomEvent,
         /// A list of room events that happened just after the requested event, in chronological
         /// order.
-        pub events_after: Vec<EventResult<only::RoomEvent>>,
+        #[wrap_incoming(EventResult, generics_index = 0)]
+        pub events_after: Vec<only::RoomEvent>,
         /// A list of room events that happened just before the requested event, in
         /// reverse-chronological order.
-        pub events_before: Vec<EventResult<only::RoomEvent>>,
+        #[wrap_incoming(EventResult, generics_index = 0)]
+        pub events_before: Vec<only::RoomEvent>,
         /// A token that can be used to paginate backwards with.
         pub start: String,
         /// The state of the room at the last event returned.
-        pub state: Vec<EventResult<only::StateEvent>>,
+        #[wrap_incoming(EventResult, generics_index = 0)]
+        pub state: Vec<only::StateEvent>,
     }
 }

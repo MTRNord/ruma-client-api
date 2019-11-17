@@ -25,6 +25,7 @@ ruma_api! {
 
     response {
         /// The user's tags for the room.
-        pub tags: EventResult<TagEventContent>,
+        #[wrap_incoming(EventResult)]
+        pub tags: TagEventContent,
     }
 }

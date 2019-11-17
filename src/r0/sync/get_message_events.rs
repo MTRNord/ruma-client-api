@@ -50,7 +50,8 @@ ruma_api! {
         /// The token the pagination starts from.
         pub start: String,
         /// A list of room events.
-        pub chunk: Vec<EventResult<only::RoomEvent>>,
+        #[wrap_incoming(EventResult, generics_index = 0)]
+        pub chunk: Vec<only::RoomEvent>,
         /// The token the pagination ends at.
         pub end: String,
     }
