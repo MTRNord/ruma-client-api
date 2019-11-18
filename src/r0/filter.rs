@@ -18,7 +18,7 @@ pub enum EventFormat {
 }
 
 /// Filters to be applied to room events
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct RoomEventFilter {
     /// A list of event types to exclude.
     ///
@@ -60,8 +60,19 @@ pub struct RoomEventFilter {
     pub types: Option<Vec<String>>,
 }
 
+impl RoomEventFilter {
+    /// A filter that can be used to ignore all room events
+    pub fn ignore_all() -> Self {
+        Self {
+            //limit: Some(UInt::from(0u32)),
+            rooms: Some(Vec::new()),
+            ..Default::default()
+        }
+    }
+}
+
 /// Filters to be applied to room data
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct RoomFilter {
     /// Include rooms that the user has left in the sync.
     ///
@@ -96,8 +107,22 @@ pub struct RoomFilter {
     pub rooms: Option<Vec<RoomId>>,
 }
 
+impl RoomFilter {
+    /// A filter that can be used to ignore all room events (of any type)
+    pub fn ignore_all() -> Self {
+        Self {
+            account_data: Some(RoomEventFilter::ignore_all()),
+            timeline: Some(RoomEventFilter::ignore_all()),
+            ephemeral: Some(RoomEventFilter::ignore_all()),
+            state: Some(RoomEventFilter::ignore_all()),
+            rooms: Some(Vec::new()),
+            ..Default::default()
+        }
+    }
+}
+
 /// Filter for not-room data
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Filter {
     /// A list of event types to exclude.
     ///
@@ -128,8 +153,19 @@ pub struct Filter {
     pub not_senders: Vec<UserId>,
 }
 
+impl Filter {
+    /// A filter that can be used to ignore all events
+    pub fn ignore_all() -> Self {
+        Self {
+            //limit: Some(UInt::from(0u32)),
+            types: Some(Vec::new()),
+            ..Default::default()
+        }
+    }
+}
+
 /// A filter definition
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct FilterDefinition {
     /// List of event fields to include.
     ///
@@ -154,4 +190,17 @@ pub struct FilterDefinition {
     /// The presence updates to include.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub presence: Option<Filter>,
+}
+
+impl FilterDefinition {
+    /// A filter that can be used to ignore all events
+    pub fn ignore_all() -> Self {
+        Self {
+            event_fields: Some(Vec::new()),
+            account_data: Some(Filter::ignore_all()),
+            room: Some(RoomFilter::ignore_all()),
+            presence: Some(Filter::ignore_all()),
+            ..Default::default()
+        }
+    }
 }
